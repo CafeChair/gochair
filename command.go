@@ -4,8 +4,6 @@ import (
     "bytes"
 )
 
-
-
 func RunCmd(keys string) (string, bool,error) {
     cmd := exec.Command("sh","-c",keys)
     var out bytes.Buffer
