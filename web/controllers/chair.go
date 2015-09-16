@@ -4,13 +4,11 @@ import (
 	"github.com/astaxie/beego"
 )
 
-
-type IndexController struct {
+type HomeController struct {
 	beego.Controller
 }
 
-func (self *IndexController) Get() {
-	self.Data["IsIndex"] = true
-	self.TplNames = "index.html"
-	
+func (c *HomeController) Get() {
+	c.Data["IsHome"] = true
+	c.TplNames = "index.html"
 }

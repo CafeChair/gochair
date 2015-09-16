@@ -1,0 +1,28 @@
+{{template "header"}}
+	<title>GoChair</title>
+</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container">
+				{{template "navbar" .}}
+			</div>
+		</nav>
+		
+		<div class="col-sm-offset-1 col-sm-10">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="active">Project</th>
+						<th class="success">Success</th>
+						<th class="danger">Failed</th>
+						<th class="info">Logs</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{range .Loginfo}}
+					{{end}}
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

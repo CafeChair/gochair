@@ -8,7 +8,7 @@ type TaskController struct {
 	beego.Controller
 }
 
-func (self *TaskController) Get() {
-	self.Data["IsTask"] = true
-	self.TplNames = "task.html"
+func (c *TaskController) Get() {
+	c.Data["IsTask"] = true
+	c.TplNames = "task.html"
 }
