@@ -1,0 +1,36 @@
+{{template "header"}}
+	<title>DashBoard</title>
+</head>
+	<body>
+		<div class="navbar navbar-default">
+			<div class="container">
+				{{template "navbar" .}}
+			</div>
+		</div>
+		<div class="container" style="width: 500px">
+			<form method="post">
+				<div class="form-group">
+					<label>User:</label>
+					<input type="text" class="form-group" placeholder="root">
+				</div>
+				<div class="form-group">
+					<label>Port:</label>
+					<input type="text" class="form-group" placeholder="22">
+				</div>
+				<div class="form-group">
+					<label>Host:</label>
+					<input type="text" class="form-group" placeholder="host">
+				</div>
+				<div class="form-group">
+					<label>Pass:</label>
+					<input type="text" class="form-group" placeholder="pass">
+				</div>
+				<div class="form-group">
+					<label>Cmds:</label>
+					<input type="text" class="form-group">
+				</div>
+				<button type="submit" class="btn btn-default">Run</button>
+			</form>
+		</div>
+	</body>
+</html>
