@@ -1,0 +1,23 @@
+{{template "header"}}
+	<title>HttpDNS</title>
+</head>
+	<body>
+		<div class="navbar navbar-default">
+			<div class="container">
+				{{template "navbar" .}}
+			</div>
+		</div>
+		<div class="container" style="width: 500px">
+			<form method="post" action="/qdns">
+				<div class="form-group">
+					<label>http://localhost:8080/qdns=</label>
+					<input type="text" class="form-control" placeholder="查询域名，例如：www.baidu.com" name="domain">
+				</div>
+				<input type="hidden" name="query" value="querydns">
+				<button type="submit" class="btn btn-default">查询</button>
+			</form>
+		</div>
+		<div class="container" style="width: 500px">
+			
+		</div>
+</html>
