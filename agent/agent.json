@@ -1,0 +1,16 @@
+{
+	"uuid":"1001001001",
+	"tags":"project_name",
+	"redis":{
+		"addr":"127.0.0.1",
+		"port":6379
+	},
+	"task":{
+		"path":"/usr/local/task",
+		"timeout":1000
+	},
+	"log":{
+		"path":"/usr/local/log",
+		"file":"agent.log"
+	}
+}
