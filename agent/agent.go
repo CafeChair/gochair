@@ -7,6 +7,8 @@ import (
 	"gochair/agent/x"
 	"gopkg.in/redis.v3"
 	"log"
+	"bytes"
+	"time"
 	"os/exec"
 	"strconv"
 )
@@ -30,11 +32,51 @@ func AgentRun() {
 	if err != nil {
 		log.Fatalln("agent get task fail: ", err)
 	}
-	fmt.Println(request)
+	result,err := ExecTask(request)
+	if err !=nil {
+		log.Fatalln("agent run task fail: ", err)
+	}
+	
 }
 
-func ExecTask(taskname string) (string, error) {
-	//执行agent获取到的任务并输出日志（数据流形式）到日志文件和缓存到redis中（结果形式）
+func ExecTask(taskname string) (string,error) {
+	//执行任务命令
+	cmd := exec.Command("sh","-c", taskname)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	cmd.Start()
+	cmdDone := make(chan error, 1)
+	go func(){
+		cmdDone <- cmd.Wait()
+	}()
+
+	select{
+	case <- time.After(time.Duration(60) * time.Second):
+		KillCmd(cmd)
+		<- cmdDone
+		return "", errors.New("Command timeout")
+	case err := <- cmdDone:
+		if err != nil {
+			log.Println(stderr.String())
+		}
+		return out.String(), err
+	}
+}
+
+func KillCmd(cmd *exec.Cmd) {
+	if err := cmd.Process.Kill(); err != nil {
+		log.Printf("Failed to kill command: %v", err)
+	}
+}
+
+func LogToFile() bool {
+//任务执行日志保存到本地日志文件中	
+}
+
+func LogToRedis() bool {
+//任务执行日志保存到redis中
 }
 
 func main() {

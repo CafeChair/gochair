@@ -1,0 +1,28 @@
+{{template "header"}}
+	<title>DashBoard</title>
+</head>
+	<body>
+		<div class="navbar navbar-default">
+			<div class="container">
+				{{template "navbar" .}}
+			</div>
+		</div>
+		<div class="container" style="width: 500px">
+			<form method="post">
+				<div class="form-group">
+					<label>Project:</label>
+					<input type="text" class="form-group" placeholder="project">
+				</div>
+				<div class="form-group">
+					<label>Project Name:</label>
+					<input type="text" class="form-group" placeholder="project class">
+				</div>
+				<div class="form-group">
+					<label>Task Name:</label>
+					<input type="text" class="form-group" placeholder="taskname">
+				</div>
+				<button type="submit" class="btn btn-default">Run</button>
+			</form>
+		</div>
+	</body>
+</html>

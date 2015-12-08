@@ -10,4 +10,5 @@ func init() {
 	beego.Router("/qdns", &controllers.QdnsController{})
 	beego.Router("/runcmd", &controllers.RunCmdController{})
 	beego.Router("/agent", &controllers.AgentController{})
+	beego.Router("/runjob", &controllers.RunJobController{})
 }
