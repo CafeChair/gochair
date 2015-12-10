@@ -11,23 +11,23 @@ import (
 	"time"
 )
 
-func Register() {
-	//向redis中注册项目组中的uuid
-	redisAddr := x.Config().Redis.Addr + ":" + strconv.Itoa(x.Config().Redis.Port)
-	redisClient := redis.NewClient(&redis.Options{Addr: redisAddr})
-	saddCmd := redisClient.SAdd(x.Config().Tags, x.Config().Uuid)
-	err := saddCmd.Err()
-	if err != nil {
-		// log.Fatalln("register agent fail: ", err)
-		logrus.WithFields(logrus.Fields{"register": "fail"}).Info(err.Error())
-	}
-}
-
 func AgentRun() {
-	//agent获取任务并执行
 	redisAddr := x.Config().Redis.Addr + ":" + strconv.Itoa(x.Config().Redis.Port)
 	redisClient := redis.NewClient(&redis.Options{Addr: redisAddr})
 	for {
+		//注册project
+		existCmd := redisClient.Exists(x.Config().Tags)
+		if err := existCmd.Err(); err != nil {
+			logrus.WithFields(logrus.Fields{"exist key": "fail"}).Info(err.Error())
+			continue
+		}
+		saddCmd := redisClient.SAdd(x.Config().Tags, x.Config().Uuid)
+		err := saddCmd.Err()
+		if err != nil {
+			// log.Fatalln("register agent fail: ", err)
+			logrus.WithFields(logrus.Fields{"register": "fail"}).Info(err.Error())
+		}
+		//agent获取任务并执行
 		request, err := redisClient.HGet(x.Config().Uuid, "taskname").Result()
 		if err == redis.Nil {
 			time.Sleep(time.Second)
@@ -52,19 +52,10 @@ func AgentRun() {
 	}
 }
 
-// func LogToFile() bool {
-// 	//agent实时日志保存到本地日志文件中
-
-// }
-
-// func LogToRedis() bool {
-// 	//任务执行日志保存到redis中
-// }
-
 func main() {
 	cfg := flag.String("c", "agent.json", "configfile")
 	flag.Parse()
 	x.ParseConfig(*cfg)
-	Register()
+	// Register()
 	AgentRun()
 }

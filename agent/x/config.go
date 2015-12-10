@@ -73,9 +73,14 @@ func Config() *AgentConfig {
 	return aconfig
 }
 
-// func WriteLog(filename, logstring string) {
+// func WriteLogToFile(filename, logstring string) {
 
 // }
+
+// func WriteLogToRedis(loguid, logstring string) {
+
+// }
+
 func ExecTask(taskname string) (string, error) {
 	// cmd := exec.Command("sh", "-c", taskname)
 	cmd := exec.Command(taskname)
