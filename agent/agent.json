@@ -10,7 +10,7 @@
 		"timeout":1000
 	},
 	"log":{
-		"path":"/usr/local/log",
+		"path":"/usr/local/agent/log",
 		"file":"agent.log"
 	}
 }
