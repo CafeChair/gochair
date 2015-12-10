@@ -3,7 +3,6 @@ package main
 //后续需要加个redis pool，避免过多的socket连接
 import (
 	"flag"
-	"fmt"
 	"github.com/Sirupsen/logrus"
 	"gochair/agent/x"
 	"gopkg.in/redis.v3"
@@ -14,6 +13,7 @@ import (
 func AgentRun() {
 	redisAddr := x.Config().Redis.Addr + ":" + strconv.Itoa(x.Config().Redis.Port)
 	redisClient := redis.NewClient(&redis.Options{Addr: redisAddr})
+	logfile := x.Config().Log.Path + "/" + x.Config().Log.File
 	for {
 		//注册project
 		existCmd := redisClient.Exists(x.Config().Tags)
@@ -45,8 +45,7 @@ func AgentRun() {
 			logrus.WithFields(logrus.Fields{"run task": "fail"}).Info(err.Error())
 		}
 		//记录日志到本地文件和远端redis中
-		fmt.Println(result)
-		ok := x.WriteLogToFile("agent.log", request, result)
+		ok := x.WriteLogToFile(logfile, request, result)
 		if ok {
 			continue
 		}
@@ -57,6 +56,5 @@ func main() {
 	cfg := flag.String("c", "agent.json", "configfile")
 	flag.Parse()
 	x.ParseConfig(*cfg)
-	// Register()
 	AgentRun()
 }
