@@ -24,7 +24,6 @@ func AgentRun() {
 		saddCmd := redisClient.SAdd(x.Config().Tags, x.Config().Uuid)
 		err := saddCmd.Err()
 		if err != nil {
-			// log.Fatalln("register agent fail: ", err)
 			logrus.WithFields(logrus.Fields{"register": "fail"}).Info(err.Error())
 		}
 		//agent获取任务并执行
@@ -34,21 +33,23 @@ func AgentRun() {
 			continue
 		}
 		if err != nil {
-			// log.Fatalln("agent get task fail: ", err)
 			logrus.WithFields(logrus.Fields{"get task": "fail"}).Info(err.Error())
 			continue
 		}
 		_, err = redisClient.Del(x.Config().Uuid).Result()
 		if err != nil {
-			// log.Fatalln("agent delete result fail: ", err)
 			logrus.WithFields(logrus.Fields{"delete result": "fail"}).Info(err.Error())
 		}
 		result, err := x.ExecTask(request)
 		if err != nil {
-			// log.Fatalln("agent run task fail: ", err)
 			logrus.WithFields(logrus.Fields{"run task": "fail"}).Info(err.Error())
 		}
+		//记录日志到本地文件和远端redis中
 		fmt.Println(result)
+		ok := x.WriteLogToFile("agent.log", request, result)
+		if ok {
+			continue
+		}
 	}
 }
 

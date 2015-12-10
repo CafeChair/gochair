@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
 	"strings"
 	"sync"
@@ -73,9 +74,18 @@ func Config() *AgentConfig {
 	return aconfig
 }
 
-// func WriteLogToFile(filename, logstring string) {
-
-// }
+func WriteLogToFile(filename, taskname, logstring string) bool {
+	file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, os.ModeType)
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+	_, err = file.WriteString("agent run task " + taskname + "\t" + "at: " + time.Now().Format("2006-01-02 15:04:05") + "\n" + logstring + "\n")
+	if err != nil {
+		return false
+	}
+	return true
+}
 
 // func WriteLogToRedis(loguid, logstring string) {
 
