@@ -1,11 +1,14 @@
 package x
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"os/exec"
 	"strings"
 	"sync"
+	"time"
 )
 
 var (
@@ -68,4 +71,52 @@ func Config() *AgentConfig {
 	lock.RLock()
 	defer lock.RUnlock()
 	return aconfig
+}
+
+// func WriteLog(filename, logstring string) {
+
+// }
+func ExecTask(taskname string) (string, error) {
+	// cmd := exec.Command("sh", "-c", taskname)
+	cmd := exec.Command(taskname)
+	var stdout bytes.Buffer
+	cmd.Stdout = &stdout
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+
+	cmd.Start()
+	err, isTimeout := execTaskTimeOut(cmd)
+	if isTimeout {
+		if err == nil {
+			return "run task timeout and kill process", err
+		}
+		if err != nil {
+			return "kill process fail", err
+		}
+	}
+	if err != nil {
+		return "run task fail", err
+	}
+	return stdout.String(), nil
+}
+
+func execTaskTimeOut(cmd *exec.Cmd) (error, bool) {
+	done := make(chan error)
+	go func() {
+		done <- cmd.Wait()
+	}()
+
+	var err error
+	select {
+	case <-time.After(time.Duration(10) * time.Second):
+		go func() {
+			<-done
+		}()
+		if err = cmd.Process.Kill(); err != nil {
+			log.Printf("Failed to kill command: %v", err)
+		}
+		return err, true
+	case err = <-done:
+		return err, false
+	}
 }

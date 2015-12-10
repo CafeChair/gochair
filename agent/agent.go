@@ -2,14 +2,11 @@ package main
 
 //后续需要加个redis pool，避免过多的socket连接
 import (
-	"bytes"
-	"errors"
 	"flag"
 	"fmt"
+	"github.com/Sirupsen/logrus"
 	"gochair/agent/x"
 	"gopkg.in/redis.v3"
-	"log"
-	"os/exec"
 	"strconv"
 	"time"
 )
@@ -21,7 +18,8 @@ func Register() {
 	saddCmd := redisClient.SAdd(x.Config().Tags, x.Config().Uuid)
 	err := saddCmd.Err()
 	if err != nil {
-		log.Fatalln("register agent fail: ", err)
+		// log.Fatalln("register agent fail: ", err)
+		logrus.WithFields(logrus.Fields{"register": "fail"}).Info(err.Error())
 	}
 }
 
@@ -36,55 +34,27 @@ func AgentRun() {
 			continue
 		}
 		if err != nil {
-			log.Fatalln("agent get task fail: ", err)
+			// log.Fatalln("agent get task fail: ", err)
+			logrus.WithFields(logrus.Fields{"get task": "fail"}).Info(err.Error())
 			continue
 		}
 		_, err = redisClient.Del(x.Config().Uuid).Result()
 		if err != nil {
-			log.Fatalln("agent delete result fail: ", err)
+			// log.Fatalln("agent delete result fail: ", err)
+			logrus.WithFields(logrus.Fields{"delete result": "fail"}).Info(err.Error())
 		}
-		result, err := ExecTask(request)
+		result, err := x.ExecTask(request)
 		if err != nil {
-			log.Fatalln("agent run task fail: ", err)
+			// log.Fatalln("agent run task fail: ", err)
+			logrus.WithFields(logrus.Fields{"run task": "fail"}).Info(err.Error())
 		}
 		fmt.Println(result)
 	}
 }
 
-func ExecTask(taskname string) (string, error) {
-	//执行任务命令
-	cmd := exec.Command("sh", "-c", taskname)
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	cmd.Start()
-	cmdDone := make(chan error, 1)
-	go func() {
-		cmdDone <- cmd.Wait()
-	}()
-
-	select {
-	case <-time.After(time.Duration(60) * time.Second):
-		KillCmd(cmd)
-		<-cmdDone
-		return "", errors.New("Command timeout")
-	case err := <-cmdDone:
-		if err != nil {
-			log.Println(stderr.String())
-		}
-		return out.String(), err
-	}
-}
-
-func KillCmd(cmd *exec.Cmd) {
-	if err := cmd.Process.Kill(); err != nil {
-		log.Printf("Failed to kill command: %v", err)
-	}
-}
-
 // func LogToFile() bool {
-// 	//任务执行日志保存到本地日志文件中
+// 	//agent实时日志保存到本地日志文件中
+
 // }
 
 // func LogToRedis() bool {
