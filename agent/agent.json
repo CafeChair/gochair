@@ -12,5 +12,9 @@
 	"log":{
 		"path":"/usr/local/agent/log",
 		"file":"agent.log"
+	},
+	"script":{
+		"path":"/usr/local/agent/plugin"
+		"timeout":1000
 	}
 }
