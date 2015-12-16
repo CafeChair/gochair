@@ -45,22 +45,57 @@ agent用于执行任务job
         }
     }
 
-####API
+####API(agent)
 
-    /v1/agent/version
+    GET /v1/agent/version
     {
         "version":"1.0"
     }
-    /v1/agent/health
+
+    GET /v1/agent/health
     {
         "health":"healthy|death"
     }
-    /v1/agent/auuid/log
+
+    GET /v1/agent/auuid/log
     {
         "uuid":"1001001001",
         "auuid":"log info"
     }
 
+####API(dashboard)
+
+    POST /v1/producer/uuid/task
+    POST {
+        "uuid":"1001001001",
+        "taskname":"like linux command or command file"
+    }
+    return {
+        "auuid":"1001001001taskname"
+    }
+
+    POST /v1/producer/project/task
+    POST {
+        "uuid":"1001001001",
+        "taskname":"like linux command or command file"
+    }
+    return {
+        "auuid":"1001001001taskname"
+    }
+
+    GET /v1/producer/project/auuid/log
+    {
+        "uuid":"1001001001",
+        "taskname":"producer set taskname",
+        "log":"agent run task loginfo"
+    }
+
+####redis struct(procuder)
+
+    smembers "project_name"
+    hset "1001001001" "taskname" "linux command or command file"
+    hget "1001001001taskname" "uuid"
+    hget "1001001001taskname" "log"
 ####redis struct(agent)
 
     sadd "mobile_project" "1001001001"
