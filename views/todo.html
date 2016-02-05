@@ -7,19 +7,15 @@
 				{{template "navbar" .}}
 			</div>
 		</div>
+		
 		<div class="container">
-			{{with .Todo}}
+			{{with .Todos}}
 				<h1>{{.Title}}</h1>
 			{{end}}
 		</div>
+
 		<div class="container">
-			<form method="post" action="/todo/add">
-				<input type="hidden" name="tid" value="{{.Todo.Id}}">
-				<div class="form-group has-success">
-					<label class="control-label" for="inputSuccess1">新增Todo</label>
-					<input type="text" class="form-control" name="todotitle">
-				</div>
-				<button type="submit" class="btn btn-primary">新增</button>
-			</form>
+			<a href="/todo/add" class="btn btn-primary">新增Todo</a>
 		</div>
+
 </html>

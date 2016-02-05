@@ -33,12 +33,7 @@ func RegisterDB() {
 func AddTodo(title string) error {
 	o := orm.NewOrm()
 	todo := &Todo{Title: title}
-	qs := o.QueryTable("todo")
-	err := qs.Filter("title", title).One(todo)
-	if err == nil {
-		return err
-	}
-	_, err = o.Insert(todo)
+	_, err := o.Insert(todo)
 	if err != nil {
 		return err
 	}
