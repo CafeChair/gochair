@@ -11,4 +11,5 @@ func init() {
 	beego.Router("/runcmd", &controllers.RunCmdController{})
 	beego.Router("/agent", &controllers.AgentController{})
 	beego.Router("/runjob", &controllers.RunJobController{})
+	beego.Router("/todo", &controllers.TodoController{})
 }

@@ -8,6 +8,7 @@
 				<li {{if .IsCron}}class="active"{{end}}><a href="/cron">Crontab</a></li>
 				<li {{if .IsRunJob}}class="active"{{end}}><a href="/runjob">RunJob</a></li>
 				<li {{if .IsAgent}}class="active"{{end}}><a href="/agent">Agent</a></li>
+				<li {{if .IsTodo}} class="active" {{end}}><a href="/todo">Todo</a></li>
 			</ul>
 		</div>
 {{end}}
