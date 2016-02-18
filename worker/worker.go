@@ -1,9 +1,15 @@
+/*
+@auth:Jay
+@Version:1.0
+@Profile:
+*/
 package main
 
 import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"gopkg.in/redis.v3"
 	"io/ioutil"
 	"log"
 	"strings"
@@ -11,6 +17,7 @@ import (
 	// "time"
 )
 
+//--------------------------define worker config----------------------------
 var (
 	ConfigFile string
 	wconfig    *WorkerConfig
@@ -75,9 +82,51 @@ func Config() *WorkerConfig {
 	return wconfig
 }
 
+//--------------------------define worker config----------------------------
+//
+//--------------------------define worker agent-----------------------------
+type Worker struct {
+	workerCfg   *WorkerConfig
+	etcdAddr    string
+	redisClient *redis.Client
+}
+
+func NewWorker(cfg *WorkerConfig) (*Worker, error) {
+	var err error
+	w := new(Worker)
+	w.workerCfg = cfg
+}
+
+func (w *Worker) Run() error {
+
+}
+
+func (w *Worker) Close() {
+
+}
+
+func (w *Worker) RegisterWorker() error {
+
+}
+
+func (w *Worker) RunTask() (string, error) {
+
+}
+
+//--------------------------define worker agent-----------------------------
+//
+//--------------------------define result storage---------------------------
+type TaskResult struct {
+	Uuid       string
+	TaskName   string
+	MaxRunTime int64
+	IsSuccess  bool
+	Result     string
+}
+
+//--------------------------define result storage---------------------------
 func main() {
 	cfg := flag.String("c", "worker.json", "worker config filename")
 	flag.Parse()
 	ParseWorkerConfigFile(*cfg)
-	fmt.Println(Config().Etcd.Addr)
 }
