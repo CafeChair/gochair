@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/coreos/go-etcd/etcd"
 	"gopkg.in/redis.v3"
 	"io/ioutil"
 	"log"
