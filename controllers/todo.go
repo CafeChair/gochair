@@ -25,10 +25,12 @@ func (self *TodoController) Post() {
 
 func (self *TodoController) Get() {
 	self.Data["IsTodo"] = true
-	var err error
-	self.Data["Todos"], err = models.GetALlTodo()
+	self.TplNames = "todo.html"
+	todos, err := models.GetAllTodo()
 	if err != nil {
 		beego.Error(err)
+	} else {
+		self.Data["Todos"] = todos
 	}
-	self.TplNames = "todo.html"
+
 }

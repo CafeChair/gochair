@@ -40,7 +40,7 @@ func AddTodo(title string) error {
 	return nil
 }
 
-func GetALlTodo() ([]*Todo, error) {
+func GetAllTodo() ([]*Todo, error) {
 	o := orm.NewOrm()
 	todos := make([]*Todo, 0)
 	qs := o.QueryTable("todo")
