@@ -1,12 +1,12 @@
 package models
 
-type JobConfig struct {
-}
+// type JobConfig struct {
+// }
 
-func GetAllAgent(project string) (auuid []string, err error) {
+// func GetAllAgent(project string) (auuid []string, err error) {
 
-}
+// }
 
-func SetJobs() {
+// func SetJobs() {
 
-}
+// }

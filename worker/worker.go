@@ -10,9 +10,10 @@ import (
 	"flag"
 	"fmt"
 	"github.com/coreos/go-etcd/etcd"
-	"gopkg.in/redis.v3"
+	"github.com/flike/golog"
 	"io/ioutil"
 	"log"
+	"strconv"
 	"strings"
 	"sync"
 	// "time"
@@ -31,23 +32,16 @@ type EtcdConfig struct {
 	Timeout int
 }
 
-type RedisConfig struct {
-	Addr    string
-	Port    int
-	Timeout int
-}
-
 type LogConfig struct {
 	Path     string
 	Filename string
 }
 
 type WorkerConfig struct {
-	Uuid  string
-	Tags  string
-	Etcd  *EtcdConfig
-	Redis *RedisConfig
-	Log   *LogConfig
+	Uuid string
+	Tags string
+	Etcd *EtcdConfig
+	Log  *LogConfig
 }
 
 func toString(filename string) (string, error) {
@@ -86,31 +80,16 @@ func Config() *WorkerConfig {
 //--------------------------define worker config----------------------------
 //
 //--------------------------define worker agent-----------------------------
-type Worker struct {
-	workerCfg   *WorkerConfig
-	etcdAddr    string
-	redisClient *redis.Client
-}
 
-func NewWorker(cfg *WorkerConfig) (*Worker, error) {
-	var err error
-	w := new(Worker)
-	w.workerCfg = cfg
-}
-
-func (w *Worker) Run() error {
+func RegisterWorker(cfg *WorkerConfig) bool {
 
 }
 
-func (w *Worker) Close() {
+func FetchJobs(cfg *WorkerConfig) bool {
 
 }
 
-func (w *Worker) RegisterWorker() error {
-
-}
-
-func (w *Worker) RunTask() (string, error) {
+func RunJobs(cfg *WorkerConfig) bool {
 
 }
 

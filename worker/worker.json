@@ -6,11 +6,6 @@
 		"port":2379,
 		"timeout":100
 	},
-	"redis":{
-		"addr":"192.168.180.44",
-		"port":6379,
-		"timeout":100
-	},
 	"log":{
 		"path":"./logs",
 		"filename":"weorker.log"
