@@ -1,4 +1,5 @@
 ## GoChair
+
 ####HttpDNS
 -   基于HTTP协议的DNS查询功能
 ```
@@ -6,10 +7,13 @@
 ```
 -   提供API接口查询(todo)
 -   页面展示成json模式(todo)
+
 ####RunCmd
 针对单独服务器的命令执行
+
 ####Crontab
 定时任务执行
+
 ####RunJob
 分布式的作业任务调度执行
 ```
