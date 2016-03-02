@@ -15,17 +15,17 @@
 				<ul>
 					{{with .Todos}}
 						{{range .}}
-							<li>
-									{{if .Finish}}
-										<del>{{.Title}}</del> &nbsp;
-										<a href="/todo/finish?id={{.Id}}&finish={{.Finish}}">恢复</a>
-									{{else}}
-										{{.Title}} &nbsp;
-										<a href="/todo/finish?id={{.Id}}&finish={{.Finish}}">完成</a>
-									{{end}}
-									<a href="/todo/edit?id={{.Id}}">修改</a>
-									<a href="/todo/delete?id={{.Id}}" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
-							</li>
+						<li>
+							{{if .Finish}}
+								<del>{{.Title}}</del> &nbsp;
+								<a href="/todo/finish?id={{.Id}}&finish={{.Finish}}">Recovery</a>
+							{{else}}
+								{{.Title}} &nbsp;
+								<a href="/todo/finish?id={{.Id}}&finish={{.Finish}}">Finish</a>
+							{{end}}
+							<a href="/todo/Modify?id={{.Id}}">Modify</a>
+							<a href="/todo/delete?id={{.Id}}" onclick="return confirm('You sure?!')">Delete</a>
+						</li>
 						{{end}}
 					{{end}}
 				</ul>
