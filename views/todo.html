@@ -11,36 +11,44 @@
 		</div>
 		
 		<div class="container">
-			<div class="row">
-				<div class="span8 offset2">
-					<div id="todo" class="well">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<td>
-										<h3 class="text-success">Todo List</h3>
-									</td>
-								</tr>
-							</thead>
-							<tbody>
-								{{range .Todos}}
-								<tr class="success">
-									<td class="todo">
-										<div class="span2">
-											<a href=""><i class="icon-ok">{{.Title}}</i></a>
-										</div>
-									</td>
-								</tr>
-								{{end}}
-							</tbody>
-						</table>
-					</div>
-				</div>
+			<div class="span8 offset2">
+				<ul>
+					{{with .Todos}}
+						{{range .}}
+							<li>
+									{{if .Finish}}
+										<del>{{.Title}}</del> &nbsp;
+										<a href="/todo/finish?id={{.Id}}&finish={{.Finish}}">恢复</a>
+									{{else}}
+										{{.Title}} &nbsp;
+										<a href="/todo/finish?id={{.Id}}&finish={{.Finish}}">完成</a>
+									{{end}}
+									<a href="/todo/edit?id={{.Id}}">修改</a>
+									<a href="/todo/delete?id={{.Id}}" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+							</li>
+						{{end}}
+					{{end}}
+				</ul>
 			</div>
 		</div>
 
 		<div class="container">
-			<a href="/todo/add" class="btn btn-primary">新增Todo</a>
+			<form action="/todo" method="post" onsubmit="return emptyCheck()">
+				<div class="form-group">
+					<input type="text" name="title" class="form-control" />
+				</div>
+				<button type="submit" class="btn btn-primary">新增Todo</button>
+			</form>
 		</div>
 
+        <script type="text/javascript">
+	        function emptyCheck() {
+	            var title = document.all['title'].value;
+	            if (title.length == 0) {
+	                alert("Content is null.")
+	                return false;
+	            }
+	            return true;
+	        }
+        </script>
 </html>
