@@ -9,6 +9,7 @@
 				<li {{if .IsRunJob}} class="active" {{end}}><a href="/runjob">RunJob</a></li>
 				<li {{if .IsAgent}} class="active" {{end}}><a href="/agent">Agent</a></li>
 				<li {{if .IsTodo}} class="active" {{end}}><a href="/todo">Todo</a></li>
+				<li {{if .IsDoc}} class="active" {{end}}><a href="/doc">Doc</a></li>
 			</ul>
 		</div>
 {{end}}
