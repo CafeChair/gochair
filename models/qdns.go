@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+type Qdns struct {
+	domain string
+	answer string
+}
+
 func ResolveFromDNS(domain string) (string, error) {
 	answer := make([]string, 0)
 	m := new(dns.Msg)

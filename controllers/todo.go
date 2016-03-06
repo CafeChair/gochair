@@ -32,5 +32,4 @@ func (self *TodoController) Get() {
 	} else {
 		self.Data["Todos"] = todos
 	}
-
 }

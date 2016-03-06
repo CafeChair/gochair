@@ -80,28 +80,24 @@ func Config() *WorkerConfig {
 //
 //--------------------------define worker agent-----------------------------
 
-func pingEtcd(cfg *WorkerConfig) bool {
-	etcdAddr := []string{"http://" + cfg.Etcd.Addr + cfg.Etcd.Port}
+func RegisterWorker() bool {
+	etcdAddr := []string{"http://" + Config().Etcd.Addr + ":" + strconv.Itoa(Config().Etcd.Port)}
 	etcdClient := etcd.NewClient(etcdAddr)
-	if _, err := etcdClient.Set("/workerping", "pong", 0); err != nil {
-		golog.Error("RegisterWroker", "ping", "ping etcd fail", 0, "err", err.Error())
+	if _, err := etcdClient.Set("/alive", Config().Uuid, 0); err != nil {
+		golog.Error("RegisterWorker", "RegisterWorker", "Register worker faild", 0, "err", err.Error())
 		return false
 	}
+	// etcdClient.Set("/project"+cfg.Tags, cfg.Uuid, 0)
 	return true
 }
-func RegisterWorker(cfg *WorkerConfig) bool {
-	if ok := pingEtcd(cfg); ok != false {
 
-	}
-}
+// func FetchJobs(cfg *WorkerConfig) bool {
 
-func FetchJobs(cfg *WorkerConfig) bool {
+// }
 
-}
+// func RunJobs(cfg *WorkerConfig) bool {
 
-func RunJobs(cfg *WorkerConfig) bool {
-
-}
+// }
 
 //--------------------------define worker agent-----------------------------
 //
@@ -119,4 +115,5 @@ func main() {
 	cfg := flag.String("c", "worker.json", "worker config filename")
 	flag.Parse()
 	ParseWorkerConfigFile(*cfg)
+
 }

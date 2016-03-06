@@ -1,0 +1,26 @@
+{{template "header"}}
+	<title>Markdown</title>
+</head>
+	<body>
+		<div class="navbar navbar-default">
+			<div class="container">
+				{{template "navbar" .}}
+			</div>
+		</div>
+		<div class="container">
+			<div class="page-title">
+				<h1>Markdown Generator</h1>
+				<p class="lead">Generate your markdown Go</p>
+				<hr />
+			</div>
+		</div>
+		<form action="/mark" method="POST">
+			<div class="form-group">
+				<textarea class="form-control" name="body" cols="30" rows="10"></textarea>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary pull-right"></input>
+			</div>
+		</form>
+	</body>
+</html>

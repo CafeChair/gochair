@@ -18,6 +18,7 @@ func (self *QdnsController) Get() {
 func (self *QdnsController) Post() {
 	domain := self.Input().Get("domain")
 	dnss, err := models.ResolveFromRedis(domain)
+
 	if err != nil {
 		self.Ctx.WriteString(fmt.Sprint(err))
 	}
