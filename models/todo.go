@@ -1,33 +1,14 @@
 package models
 
 import (
-	"github.com/Unknwon/com"
 	"github.com/astaxie/beego/orm"
-	_ "github.com/mattn/go-sqlite3"
-	"os"
-	"path"
 	"strconv"
-)
-
-const (
-	_DB_NAME        = "data/gochair.db"
-	_SQLITE3_DRIVER = "sqlite3"
 )
 
 type Todo struct {
 	Id     int64
 	Title  string
 	Finish bool
-}
-
-func RegisterDB() {
-	if !com.IsExist(_DB_NAME) {
-		os.MkdirAll(path.Dir(_DB_NAME), os.ModePerm)
-		os.Create(_DB_NAME)
-	}
-	orm.RegisterModel(new(Todo))
-	orm.RegisterDriver(_SQLITE3_DRIVER, orm.DR_Sqlite)
-	orm.RegisterDataBase("default", _SQLITE3_DRIVER, _DB_NAME, 10)
 }
 
 func AddTodo(title string) error {

@@ -6,15 +6,10 @@ import (
 )
 
 type TodoController struct {
-	beego.Controller
-}
-
-func (self *TodoController) Add() {
-	self.TplNames = "todo_add.html"
+	BaseController
 }
 
 func (self *TodoController) Post() {
-	// tid := self.Input().Get("tid")
 	title := self.Input().Get("title")
 	err := models.AddTodo(title)
 	if err != nil {
