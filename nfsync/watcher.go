@@ -5,13 +5,12 @@ import (
 	"gopkg.in/fsnotify.v1"
 	"log"
 	"os"
-	// "os/signal"
-	// "path/filepath"
 	"strings"
 )
 
+var watchExit chan bool
+
 func watch(path string) {
-	watchExit := make(chan bool)
 	log.Printf("Adding %s to watcher\n", path)
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -63,21 +62,12 @@ func Watcher(context *cli.Context) {
 		watchDir = context.Args()[0]
 	}
 	watch(watchDir)
-	// appExit := make(chan bool)
-	// c := make(chan os.Signal, 1)
-	// signal.Notify(c, os.Interrupt)
-	// go func() {
-	// 	<-c
-	// 	chans := []chan bool{appExit}
-	// 	for _, c := range chans {
-	// 		c <- true
-	// 	}
-	// }()
-	// <-appExit
 	log.Println("Exiting...")
 }
+
 func main() {
 	app := cli.NewApp()
 	app.Action = Watcher
 	app.Run(os.Args)
+	watch("/tmp")
 }
