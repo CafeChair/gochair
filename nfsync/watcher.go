@@ -1,106 +1,83 @@
 package main
 
 import (
-	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/landaire/recwatch"
 	"gopkg.in/fsnotify.v1"
+	"log"
 	"os"
-	"path/filepath"
+	// "os/signal"
+	// "path/filepath"
 	"strings"
 )
 
-var (
-	Log           *logrus.Logger
-	WatchExit     chan bool
-	watchRoot     string
-	ModifiedFiles chan string
-	DeletedFiles  chan string
-)
-
-func init() {
-	Log = logrus.New()
-	WatchExit = make(chan bool)
-	ModifiedFiles = make(chan string, 100)
-	DeletedFiles = make(chan string, 100)
-}
-
-func Watch(path string) {
-	Log.Debugf("Adding %s to watcher...\n", path)
-	watcher, err := recwatch.NewRecursiveWatcher(path)
+func watch(path string) {
+	watchExit := make(chan bool)
+	log.Printf("Adding %s to watcher\n", path)
+	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		Log.Fatalf("can not initialize fsnotify watcher: %v\n", err)
+		log.Fatalf("Could not initialize fsnotify watcher: %v\n", err)
 	}
-	watchRoot = path
-	for {
-		select {
-		case event := <-watcher.Events:
-			Log.Debugln("Event: ", event)
-			if strings.TrimSpace(event.Name) == "" {
-				Log.Debugln("Got an empty string... not touching that")
-				continue
-			}
-			path, err := filePathFromEvent(&event)
-			if err != nil {
-				Log.Errorln(err)
-				continue
-			}
-			if event.Op&fsnotify.Write == fsnotify.Write {
-				Log.Debugln("Write event received:", event.Name)
-				ModifiedFiles <- path
-			} else if event.Op&fsnotify.Remove == fsnotify.Remove {
-				Log.Debugln("Remove event received:", event.Name)
-				DeletedFiles <- path
-			} else if event.Op&fsnotify.Create == fsnotify.Create {
-				Log.Debugln("Create event received:", event.Name)
-				ModifiedFiles <- path
-				stat, err := os.Stat(path)
-				if err != nil {
-					Log.Errorln(err)
+	defer watcher.Close()
+
+	go func() {
+		for {
+			select {
+			case event := <-watcher.Events:
+				log.Printf("Event:", event)
+				if strings.TrimSpace(event.Name) == "" {
+					log.Println("Got an empty string... not touching that")
 					continue
 				}
-				if stat.IsDir() {
-					if err := watcher.Add(path); err != nil {
-						Log.Debugln("Can not watch folder:", err)
-					}
+				if event.Op&fsnotify.Write == fsnotify.Write {
+					log.Printf("Write event received: %s", event.Name)
+				} else if event.Op&fsnotify.Remove == fsnotify.Remove {
+					log.Printf("Remove event received: %s", event.Name)
+				} else if event.Op&fsnotify.Create == fsnotify.Create {
+					log.Printf("Create event received: %s", event.Name)
+				} else if event.Op&fsnotify.Rename == fsnotify.Rename {
+					log.Printf("Rename event received: %s", event.Name)
 				}
-			} else if event.Op&fsnotify.Rename == fsnotify.Rename {
-				Log.Debugln("Rename event received:", event.Name)
-				DeletedFiles <- path
+			case err := <-watcher.Errors:
+				log.Printf("Error %s\n", err)
 			}
-		case <-WatchExit:
-			Log.Debugln("WatchExit signle received -- shutting down watcher")
-			goto _cleanup
 		}
-	}
-_cleanup:
-	if err := watcher.Close(); err != nil {
-		Log.Errorln("Error shutting down watcher", err)
-	}
-	Log.Debugln("Exiting Watcher")
-	WatchExit <- true
-}
-func filePathFromEvent(event *fsnotify.Event) (path string, err error) {
-	defer func() {
-		path = filepath.Clean(path)
 	}()
-	if filepath.IsAbs(event.Name) {
-		path = event.Name
-		return
+	err = watcher.Add(path)
+	if err != nil {
+		log.Fatalln(err)
 	}
-	path, err = filepath.Abs(event.Name)
-	return
+	<-watchExit
 }
 
+func Watcher(context *cli.Context) {
+	argc := len(context.Args())
+	if argc < 1 || argc > 2 {
+		context.App.Command("help").Run(context)
+		return
+	}
+	watchDir, err := os.Getwd()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if argc > 1 {
+		watchDir = context.Args()[0]
+	}
+	watch(watchDir)
+	// appExit := make(chan bool)
+	// c := make(chan os.Signal, 1)
+	// signal.Notify(c, os.Interrupt)
+	// go func() {
+	// 	<-c
+	// 	chans := []chan bool{appExit}
+	// 	for _, c := range chans {
+	// 		c <- true
+	// 	}
+	// }()
+	// <-appExit
+	log.Println("Exiting...")
+}
 func main() {
 	app := cli.NewApp()
-	app.Flags = []cli.Flag{
-		cli.BoolFlag{
-			Name:  "verbose",
-			Usage: "Enable verbose logging",
-		},
-	}
-	app.Action = watch
-	app.Name = "watcher"
+	app.Action = Watcher
 	app.Run(os.Args)
 }
