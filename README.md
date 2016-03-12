@@ -28,3 +28,12 @@
 -   目标网络状况检测
 -   docker管理
 -   权限管理
+
+####Idea
+```
+/v1/backup/auuid
+{
+    "auud":"",
+    "success":1
+}
+```

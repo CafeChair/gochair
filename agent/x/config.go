@@ -92,8 +92,8 @@ func WriteLogToFile(filename, taskname, logstring string) bool {
 // }
 
 func ExecTask(taskname string) (string, error) {
-	// cmd := exec.Command("sh", "-c", taskname)
-	cmd := exec.Command(taskname)
+	cmd := exec.Command("sh", "-c", taskname)
+	// cmd := exec.Command(taskname)
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	var stderr bytes.Buffer
