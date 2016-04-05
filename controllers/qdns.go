@@ -17,10 +17,13 @@ func (self *QdnsController) Get() {
 
 func (self *QdnsController) Post() {
 	domain := self.Input().Get("domain")
-	dnss, err := models.ResolveFromRedis(domain)
+	dnss, err := models.ResolveFromRedis2(domain)
 
 	if err != nil {
 		self.Ctx.WriteString(fmt.Sprint(err))
+	} else {
+		self.Data["QDNS"] = dnss
+		self.TplNames = "qdns.html"
 	}
-	self.Ctx.WriteString(fmt.Sprint(dnss))
+	// self.Ctx.WriteString(fmt.Sprint(dnss))
 }

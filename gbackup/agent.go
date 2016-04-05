@@ -1,7 +1,7 @@
 /*
 1：/usr/local/agent/script/下的备份脚本备份完数据库
 2：备份格式是（ipaddress-timestamp-数据类型-.tar.gz）
-3：agent端把备份信息推送到redis队列中
+3：agent把备份信息推送到redis队列中
 4：服务端从redis队列中取出并通过rsync拉取
 */
 package main
@@ -19,9 +19,12 @@ type AgentBackupInfo struct {
 	BackupFile string
 }
 
-func FetchAllScript(relativePath string) ([]string, error) {
+func FetchAllScript(scirptPath string) ([]string, error) {
+	/*
+		获取到备份目录下的所有备份脚本文件，返回文件list
+	*/
 	scriptList := make([]string, 0)
-	scripts, err := ioutil.ReadDir(relativePath)
+	scripts, err := ioutil.ReadDir(scirptPath)
 	if err != nil {
 		return scriptList, err
 	}
@@ -29,30 +32,18 @@ func FetchAllScript(relativePath string) ([]string, error) {
 		if script.IsDir() {
 			continue
 		}
-		scriptName := filepath.Join(relativePath, script.Name())
+		scriptName := filepath.Join(scirptPath, script.Name())
 		scriptList = append(scriptList, scriptName)
 	}
 	return scriptList, nil
 }
 
-// func ExecuteScript(script string) (*AgentBackupInfo, error) {
-
-// }
+func ExecuteScript(script string) (*AgentBackupInfo, error) {
+	/*
+		执行备份脚本
+	*/
+}
 
 func main() {
-	conf, err := goconfig.LoadConfigFile("./agent.conf")
-	if err != nil {
-		fmt.Println(err)
-	}
-	scriptDir, err := conf.GetValue("global", "workdir")
-	if err != nil {
-		fmt.Println(err)
-	}
-	scriptList, err := FetchAllScript(scriptDir)
-	if err != nil {
-		fmt.Println(err)
-	}
-	for _, script := range scriptList {
-		fmt.Println(script)
-	}
+
 }

@@ -9,8 +9,8 @@ import (
 )
 
 type Qdns struct {
-	domain string
-	answer string
+	Domain string
+	Answer []string
 }
 
 func ResolveFromDNS(domain string) (string, error) {
@@ -32,6 +32,45 @@ func ResolveFromDNS(domain string) (string, error) {
 		return answerstr, nil
 	}
 	return strings.Join(answer, ","), err
+}
+
+func ResolveFromDNS2(domain string) (*Qdns, error) {
+	answer := make([]string, 0)
+	m := new(dns.Msg)
+	m.SetQuestion(dns.Fqdn(domain), dns.TypeA)
+	c := new(dns.Client)
+	in, _, err := c.Exchange(m, beego.AppConfig.String("dns"))
+	if err != nil {
+		qdns := &Qdns{Domain: domain, Answer: answer}
+		return qdns, err
+	}
+	for _, ain := range in.Answer {
+		if a, ok := ain.(*dns.A); ok {
+			answer = append(answer, a.A.String())
+		}
+	}
+	qdns := &Qdns{Domain: domain, Answer: answer}
+	answerstr := strings.Join(answer, ",")
+	if err := cacheToRedis(domain, answerstr); err != nil {
+		// return answerstr, nil
+		return qdns, err
+	}
+	return qdns, nil
+}
+
+func ResolveFromRedis2(domain string) (*Qdns, error) {
+	redisClient := redis.NewClient(&redis.Options{Addr: beego.AppConfig.String("redis")})
+	strcmd, err := redisClient.Get(domain).Result()
+	answer := strings.Split(strcmd, ",")
+	if err == nil {
+		qdns := &Qdns{Domain: domain, Answer: answer}
+		return qdns, nil
+	}
+	str, errs := ResolveFromDNS2(domain)
+	if errs == nil {
+		return str, errs
+	}
+	return str, errs
 }
 
 func ResolveFromRedis(domain string) (string, error) {

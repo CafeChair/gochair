@@ -4,11 +4,11 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type RunJobController struct {
+type JobsController struct {
 	beego.Controller
 }
 
-func (self *RunJobController) Get() {
-	self.Data["IsRunJob"] = true
-	self.TplNames = "runjob.html"
+func (self *JobsController) Get() {
+	self.Data["IsJobs"] = true
+	self.TplNames = "jobs.html"
 }
