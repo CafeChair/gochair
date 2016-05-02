@@ -1,15 +1,11 @@
-package x
+package agent
 
 import (
-	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"os"
-	"os/exec"
 	"strings"
 	"sync"
-	"time"
 )
 
 var (
@@ -21,9 +17,15 @@ var (
 type AgentConfig struct {
 	Uuid  string
 	Tags  string
+	Zook  *ZookeeperConfig
 	Redis *RedisConfig
 	Task  *TaskConfig
 	Log   *LogConfig
+}
+
+type ZookeeperConfig struct {
+	Addr string
+	Port int
 }
 
 type RedisConfig struct {
@@ -32,12 +34,15 @@ type RedisConfig struct {
 }
 
 type TaskConfig struct {
-	Path    string
-	TimeOut int
+	Addr string
+}
+
+type ScriptConfig struct {
+	Addr string
 }
 
 type LogConfig struct {
-	Path string
+	Addr string
 	File string
 }
 
@@ -72,66 +77,4 @@ func Config() *AgentConfig {
 	lock.RLock()
 	defer lock.RUnlock()
 	return aconfig
-}
-
-func WriteLogToFile(filename, taskname, logstring string) bool {
-	file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, os.ModeType)
-	if err != nil {
-		return false
-	}
-	defer file.Close()
-	_, err = file.WriteString("agent run task " + taskname + "\t" + "at: " + time.Now().Format("2006-01-02 15:04:05") + "\n" + logstring + "\n")
-	if err != nil {
-		return false
-	}
-	return true
-}
-
-// func WriteLogToRedis(loguid, logstring string) {
-
-// }
-
-func ExecTask(taskname string) (string, error) {
-	cmd := exec.Command("sh", "-c", taskname)
-	// cmd := exec.Command(taskname)
-	var stdout bytes.Buffer
-	cmd.Stdout = &stdout
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-
-	cmd.Start()
-	err, isTimeout := execTaskTimeOut(cmd)
-	if isTimeout {
-		if err == nil {
-			return "run task timeout and kill process", err
-		}
-		if err != nil {
-			return "kill process fail", err
-		}
-	}
-	if err != nil {
-		return "run task fail", err
-	}
-	return stdout.String(), nil
-}
-
-func execTaskTimeOut(cmd *exec.Cmd) (error, bool) {
-	done := make(chan error)
-	go func() {
-		done <- cmd.Wait()
-	}()
-
-	var err error
-	select {
-	case <-time.After(time.Duration(10) * time.Second):
-		go func() {
-			<-done
-		}()
-		if err = cmd.Process.Kill(); err != nil {
-			log.Printf("Failed to kill command: %v", err)
-		}
-		return err, true
-	case err = <-done:
-		return err, false
-	}
 }

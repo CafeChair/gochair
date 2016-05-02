@@ -1,16 +1,26 @@
 {
-	"uuid":"1001001001",
+	"goagent_key":"1001001001",
 	"tags":"project_name",
+	"zookeeper":{
+		"addr":"127.0.0.1",
+		"port":2181
+	},
+	"appserver":{
+		"addr":"127.0.0.1",
+		"port":8080
+	},
 	"redis":{
 		"addr":"127.0.0.1",
 		"port":6379
 	},
 	"task":{
-		"path":"/usr/local/agent/task",
-		"timeout":1000
+		"addr":"/usr/local/gosagent/task",
+	},
+	"script":{
+		"addr":"/usr/local/goagent/script"
 	},
 	"log":{
-		"path":"/usr/local/agent/log",
-		"file":"agent.log"
+		"addr":"/usr/local/goagent/log",
+		"file":"goagent.log"
 	}
 }
