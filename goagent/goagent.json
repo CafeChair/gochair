@@ -1,8 +1,8 @@
 {
-	"goagent_key":"1001001001",
+	"agentkey":"1001001001",
 	"tags":"project_name",
 	"zookeeper":{
-		"addr":"127.0.0.1",
+		"addr":"10.3.5.12",
 		"port":2181
 	},
 	"appserver":{
@@ -14,7 +14,7 @@
 		"port":6379
 	},
 	"task":{
-		"addr":"/usr/local/gosagent/task",
+		"addr":"/usr/local/gosagent/task"
 	},
 	"script":{
 		"addr":"/usr/local/goagent/script"

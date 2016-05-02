@@ -2,7 +2,7 @@ package agent
 
 import (
 	"fmt"
-	"os"
+	// "os"
 	"runtime"
 	"strings"
 	"time"
@@ -98,15 +98,15 @@ func getColorLevel(level string) string {
 	}
 }
 
-func WriteLogToFile(filename, taskname, logstring string) bool {
-	file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, os.ModeType)
-	if err != nil {
-		return false
-	}
-	defer file.Close()
-	_, err = file.WriteString(ColorLog("[INFO] 执行任务: %v 输出: %s\n", taskname, logstring))
-	if err != nil {
-		return false
-	}
-	return true
-}
+// func WriteLogToFile(filename, taskname, logstring string) bool {
+// 	file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, os.ModeType)
+// 	if err != nil {
+// 		return false
+// 	}
+// 	defer file.Close()
+// 	_, err = file.WriteString(ColorLog("[INFO] 执行任务: %v 输出: %s\n", taskname, logstring))
+// 	if err != nil {
+// 		return false
+// 	}
+// 	return true
+// }
