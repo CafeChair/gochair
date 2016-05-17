@@ -1,8 +1,8 @@
 {
-	"agentkey":"1001001001",
+	"agentkey":"31000010000000",
 	"tags":"project_name",
 	"zookeeper":{
-		"addr":"10.3.5.12",
+		"addr":"10.3.5.118",
 		"port":2181
 	},
 	"appserver":{

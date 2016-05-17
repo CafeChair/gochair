@@ -6,11 +6,21 @@ import (
 	"time"
 )
 
-func Connection() *zk.Conn {
-	conn, _, err := zk.Connect([]string{Config().Zookeeper.Addr + ":" + strconv.Itoa(Config().Zookeeper.Port)}, time.Second)
-	if err != nil {
-		panic(err)
-	}
-	defer conn.Close()
-	return conn
+type Zook struct {
+	conn *zk.Conn
 }
+
+func new(server string) (*Zook, error) {
+	conn, _, err := zk.Connect(server, time.Second*5)
+	if err != nil {
+		// ColorLog("[ERRO] 连接zookeeper %v 失败: %s\n", server, err)
+		return nil, err
+	}
+	return &Zook{conn: conn}, nil
+}
+
+func (z *Zook) Close() {
+	z.conn.Close()
+}
+
+func Watch(key string)
