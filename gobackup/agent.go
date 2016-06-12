@@ -21,7 +21,7 @@ import (
 )
 
 type BackupInfo struct {
-	ServerId        int64
+	ServerId        int64 //唯一ID
 	Interval        int64 //上报时间间隔
 	GameId          int64
 	OpId            int64
