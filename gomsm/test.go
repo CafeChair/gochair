@@ -15,37 +15,35 @@ type InstanceModel struct {
 }
 
 func main() {
-	// user := "dbmanager"
-	// pass := "eyDqNafZ6pq39Rah"
-	// // host := "10.6.24.40:3308"
-	// host := "10.50.17.35:3308"
-	// // master_host := "10.6.24.16"
-	// //
+	user := "dbmanager"
+	pass := "eyDqNafZ6pq39Rah"
+	// host := "10.6.24.40:3308"
+	host := "10.50.17.35:3308"
+	// master_host := "10.6.24.16"
+	//
 
-	// ins := new(InstanceModel)
-	// db, err := sql.Open("mysql", user+":"+pass+"@tcp("+host+")/")
-	// defer db.Close()
-	// if err != nil {
-	// 	glog.V(1).Info("Connect Mysql return error with:", err)
-	// }
-	// result, err := GetQueryResult(db, "show slave status;")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// if value, ok := result["Master_Host"]; ok {
-	// 	if value == "Null" {
-	// 		ins.Role = "Slave"
-	// 		ins.Addr = host
-	// 		ins.Alive = true
-	// 	} else {
-	// 		ins.Role = "Master"
-	// 		ins.Addr = host
-	// 		ins.Alive = true
-	// 	}
-	// }
-	// fmt.Println(ins)
-	ins := test()
-	glog.V(1).Infoln(ins.Role)
+	ins := new(InstanceModel)
+	db, err := sql.Open("mysql", user+":"+pass+"@tcp("+host+")/")
+	defer db.Close()
+	if err != nil {
+		glog.V(1).Info("Connect Mysql return error with:", err)
+	}
+	result, err := GetQueryResult(db, "show slave status;")
+	if err != nil {
+		fmt.Println(err)
+	}
+	if value, ok := result["Master_Host"]; ok {
+		if value == "Null" {
+			ins.Role = "Slave"
+			ins.Addr = host
+			ins.Alive = true
+		} else {
+			ins.Role = "Master"
+			ins.Addr = host
+			ins.Alive = true
+		}
+	}
+	fmt.Println(ins)
 }
 
 func test() InstanceModel {

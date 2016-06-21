@@ -6,8 +6,12 @@ import (
 	"time"
 )
 
-type Zook struct {
-	conn *zk.Conn
+type ZookWatcher struct {
+	conn    *zk.Conn
+	results chan result
+}
+
+type result struct {
 }
 
 func new(server string) (*Zook, error) {
