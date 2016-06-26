@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Jobs Manager</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../static/css/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="../static/css/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <!-- <link href="../static/css/dataTables.responsive.css" rel="stylesheet"> -->
+
+    <!-- Timeline CSS -->
+    <!-- <link href="../static/css/timeline.css" rel="stylesheet"> -->
+
+    <!-- Custom CSS -->
+    <link href="../static/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<div id="wrapper">
+		<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+			<!-- /.navbar-header -->
+			<div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Gochair</a>
+            </div>
+            <!-- /.navbar-header -->
+            
+            <!-- /.navbar-top-links -->
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+                <!-- /.navbar-top-links -->
+
+			<!-- /.navbar-static-side -->
+			<div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-plane fa-fw"></i> Jobs<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="jobs_manage.html">业务管理</a>
+                                </li>
+                                <li>
+                                    <a href="jobs_app.html">APP中心</a>
+                                </li>
+                                <li>
+                                    <a href="jobs_lists.html">任务列表</a>
+                                </li>
+                                <li>
+                                    <a href="jobs_dead.html">死亡状况</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="cdn.html"><i class="fa fa-maxcdn fa-fw"></i> CDN</a>
+                        </li>
+                        <li>
+                            <a href="crontab.html"><i class="fa fa-clock-o fa-fw"></i> Crontab</a>
+                        </li>
+                        <li>
+                            <a href="httpdns.html"><i class="fa fa-plane fa-fw"></i> HttpDNS</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-database fa-fw"></i> </i> Database<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="database_add.html">添加主机</a>
+                                </li>
+                                <li>
+                                    <a href="database_status.html">主从状态</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-cloud-upload fa-fw"></i> Backup<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="backup_instance.html">备份实例</a>
+                                </li>
+                                <li>
+                                    <a href="backup_bussiness_type.html">业务分类</a>
+                                </li>
+                                <li>
+                                    <a href="backup_type.html">备份类型</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="agent.html"><i class="fa fa-child fa-fw"></i> Agent</a>
+                        </li>
+                        <li>
+                            <a href="git.html"><i class="fa fa-github fa-fw"></i> Git</a>
+                        </li>
+                        <li>
+                            <a href="todo.html"><i class="fa fa-calendar fa-fw"></i> Todo</a>
+                        </li>
+                        <li>
+                            <a href="users.html"><i class="fa fa-users fa-fw"></i> Users</a>
+                        </li>
+                        <li>
+                            <a href="document.html"><i class="fa fa-book fa-fw"></i> Document</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+		</nav>
+		<!-- Navigation -->
+
+		<!-- /#page-wrapper -->
+		<div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            业务管理
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="5"></textarea>
+                                        </div>
+                                    </form>
+                                    <button type="submit" class="btn btn-primary">增加分组</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="5"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-info">增加实例</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-4">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="5"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-warning">删除实例</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td><button type="submit" class="btn btn-primary">进入</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td><button type="submit" class="btn btn-primary">进入</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- /.col-lg-12 -->
+		<!-- /#page-wrapper -->
+    </body>
+	</div>
+   
+    <!-- jQuery -->
+    <script src="../static/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../static/js/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../static/js/jquery.dataTables.min.js"></script>
+    <script src="../static/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/sb-admin.js"></script>
+</body>
+</html>
